@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define Max 100
+typedef int  ElementType ;
+typedef int parentType;
+struct GNode{
+    ElementType data;
+    parentType parent;
+};
+typedef  struct GNode setType[Max];
+
+ElementType find(ElementType x,setType s[]);
+void Union(ElementType x,ElementType y,setType s[]);
+int main()
+{
+    printf("Hello world!\n");
+    return 0;
+}
+
+/*作用：查找元素
+传入参数：查找的元素x的根位置,已经建立起来的双亲表示法的树s[]*/
+ElementType find(ElementType x,setType s[]){
+    int i;
+    for(i=0;i<Max && s[i]->data!=x;i++);
+    if(i>=Max) return -1;//查找失败
+    for(;s[i]->parent>=0;i=s[i]->parent);
+        return i;
+}
+
+/*作用：将两个集合合并*/
+void Union(ElementType x,ElementType y,setType s[]){
+    ElementType root1,root2;
+    root1=find(x,s);
+    root2=find(y,s);
+    //集合2比较大,这里是负数比较
+    if(s[root1]->parent >= s[root2]->parent){
+        s[root2]->parent+=s[root1]->parent;//更新集合数量
+        s[root1]->parent=root2;
+    }else{//集合1大
+        s[root1]->parent+=s[root2]->parent;//更新集合数量
+        s[root2]->parent=root1;
+    }
+}
